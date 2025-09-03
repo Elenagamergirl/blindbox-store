@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Blind Box Store</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: #f5f5f5; 
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        h1, h2, h3 { 
+            color: #333; 
+        }
+        .filters { 
+            margin-bottom: 20px; 
+            padding: 15px; 
+            background: #f0f0f0; 
+            border-radius: 5px; 
+        }
+        .series-card { 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+        }
+        .low-stock { 
+            background-color: #ffe6e6; 
+            border-left: 4px solid #ff4d4d; 
+        }
+        .out-of-stock { 
+            background-color: #f8d7da; 
+            border-left: 4px solid #dc3545; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 10px 0; 
+        }
+        th, td { 
+            padding: 8px; 
+            text-align: left; 
+            border-bottom: 1px solid #ddd; 
+        }
+        th { 
+            background-color: #f2f2f2; 
+        }
+        button { 
+            background-color: #4CAF50; 
+            color: white; 
+            border: none; 
+            padding: 5px 10px; 
+            border-radius: 3px; 
+            cursor: pointer; 
+            margin-right: 5px; 
+        }
+        button:hover { 
+            background-color: #45a049; 
+        }
+        button.edit { 
+            background-color: #2196F3; 
+        }
+        button.view { 
+            background-color: #FF9800; 
+        }
+        input[type="number"] { 
+            width: 60px; 
+            padding: 3px; 
+        }
+        .tab { 
+            overflow: hidden; 
+            border: 1px solid #ccc; 
+            background-color: #f1f1f1; 
+            border-radius: 5px 5px 0 0; 
+        }
+        .tab button { 
+            background-color: inherit; 
+            float: left; 
+            border: none; 
+            outline: none; 
+            cursor: pointer; 
+            padding: 10px 16px; 
+            transition: 0.3s; 
+            color: #333; 
+        }
+        .tab button:hover { 
+            background-color: #ddd; 
+        }
+        .tab button.active { 
+            background-color: #ccc; 
+        }
+        .tabcontent { 
+            display: none; 
+            padding: 15px; 
+            border: 1px solid #ccc; 
+            border-top: none; 
+            border-radius: 0 0 5px 5px; 
+        }
+        .order-card { 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+        }
+        .status-pending { 
+            border-left: 4px solid #FF9800; 
+        }
+        .status-processing { 
+            border-left: 4px solid #2196F3; 
+        }
+        .status-shipped { 
+            border-left: 4px solid #4CAF50; 
+        }
+        .status-delivered { 
+            border-left: 4px solid #795548; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Blind Box Store Admin Panel</h1>
+        
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'Inventory')">Inventory</button>
+            <button class="tablinks" onclick="openTab(event, 'Orders')">Orders</button>
+        </div>
+        
+        <div id="Inventory" class="tabcontent" style="display:block;">
+            <div class="filters">
+                <input type="text" id="searchInput" placeholder="Search series or boxes..." onkeyup="filterInventory()">
+                <select id="stockFilter" onchange="filterInventory()">
+                    <option value="all">All Stock Levels</option>
+                    <option value="low">Low Stock (< 5)</option>
+                    <option value="out">Out of Stock</option>
+                </select>
+            </div>
+            
+            <div id="inventoryList">
+                <p>Loading inventory...</p>
+            </div>
+        </div>
+        
+        <div id="Orders" class="tabcontent">
+            <div class="filters">
+                <select id="statusFilter" onchange="loadOrders()">
+                    <option value="all">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                </select>
+            </div>
+            
+            <div id="ordersList">
+                <p>Loading orders...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab navigation
+        function openTab(evt, tabName) {
+            const tabcontent = document.getElementsByClassName("tabcontent");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            
+            const tablinks = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+            
+            if (tabName === 'Orders') {
+                loadOrders();
+            }
+        }
+        
+        // Load inventory data
+        async function loadInventory() {
+            try {
+                const response = await fetch('/admin/api/inventory');
+                const series = await response.json();
+                
+                const inventoryList = document.getElementById('inventoryList');
+                inventoryList.innerHTML = '';
+                
+                series.forEach(s => {
+                    const seriesCard = document.createElement('div');
+                    seriesCard.className = 'series-card';
+                    if (s.available_stock < 5) seriesCard.classList.add('low-stock');
+                    if (s.available_stock === 0) seriesCard.classList.add('out-of-stock');
+                    
+                    seriesCard.innerHTML = `
+                        <h2>${s.name} (${s.available_stock}/${s.total_stock} available)</h2>
+                        
+                        <h3>Boxes:</h3>
+                        <table>
+                            <tr>
+                                <th>Box ID</th>
+                                <th>Name</th>
+                                <th>Stock</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            ${s.boxes.map(box => `
+                                <tr>
+                                    <td>${box.id}</td>
+                                    <td>${box.specific_name}</td>
+                                    <td>
+                                        <input type="number" id="stock-${box.id}" value="${box.stock}" min="0">
+                                    </td>
+                                    <td>$${box.price}</td>
+                                    <td>${box.available ? 'Available' : 'Disabled'}</td>
+                                    <td>
+                                        <button onclick="updateBox(${box.id})">Update</button>
+                                        <button onclick="toggleBox(${box.id}, ${box.available ? 0 : 1})">
+                                            ${box.available ? 'Disable' : 'Enable'}
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </table>
+                    `;
+                    
+                    inventoryList.appendChild(seriesCard);
+                });
+            } catch (error) {
+                console.error('Error loading inventory:', error);
+                document.getElementById('inventoryList').innerHTML = '<p>Error loading inventory</p>';
+            }
+        }
+        
+        // Update box stock
+        async function updateBox(boxId) {
+            const stockInput = document.getElementById(`stock-${boxId}`);
+            const newStock = parseInt(stockInput.value);
+            
+            if (isNaN(newStock) || newStock < 0) {
+                alert('Please enter a valid stock number');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/admin/api/inventory/box/${boxId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        stock: newStock,
+                        available: true
+                    })
+                });
+                
+                const result = await response.json();
+                alert(result.message);
+                loadInventory(); // Reload inventory
+            } catch (error) {
+                console.error('Error updating box:', error);
+                alert('Error updating box');
+            }
+        }
+        
+        // Toggle box availability
+        async function toggleBox(boxId, available) {
+            try {
+                const response = await fetch(`/admin/api/inventory/box/${boxId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        available: available === 1,
+                        stock: document.getElementById(`stock-${boxId}`).value
+                    })
+                });
+                
+                const result = await response.json();
+                alert(result.message);
+                loadInventory(); // Reload inventory
+            } catch (error) {
+                console.error('Error toggling box:', error);
+                alert('Error toggling box');
+            }
+        }
+        
+        // Filter inventory
+        function filterInventory() {
+            // This would be implemented with the search functionality
+            console.log('Filtering inventory...');
+        }
+        
+        // Load orders
+        async function loadOrders() {
+            try {
+                const statusFilter = document.getElementById('statusFilter').value;
+                const url = statusFilter === 'all' ? '/api/orders' : `/api/orders?status=${statusFilter}`;
+                
+                const response = await fetch(url);
+                const orders = await response.json();
+                
+                const ordersList = document.getElementById('ordersList');
+                ordersList.innerHTML = '';
+                
+                if (orders.length === 0) {
+                    ordersList.innerHTML = '<p>No orders found</p>';
+                    return;
+                }
+                
+                orders.forEach(order => {
+                    const orderCard = document.createElement('div');
+                    orderCard.className = `order-card status-${order.status}`;
+                    
+                    orderCard.innerHTML = `
+                        <h3>Order #${order.id} - ${order.customer_name} (${order.customer_email})</h3>
+                        <p><strong>Date:</strong> ${new Date(order.order_date).toLocaleString()}</p>
+                        <p><strong>Total:</strong> $${order.total_amount}</p>
+                        <p><strong>Status:</strong> 
+                            <select id="status-${order.id}" onchange="updateOrderStatus(${order.id})">
+                                <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Processing</option>
+                                <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                            </select>
+                        </p>
+                        
+                        <h4>Items:</h4>
+                        <ul>
+                            ${order.items.map(item => `
+                                <li>${item.specific_name} (Box ID: ${item.box_id}) - Qty: ${item.quantity}</li>
+                            `).join('')}
+                        </ul>
+                    `;
+                    
+                    ordersList.appendChild(orderCard);
+                });
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                document.getElementById('ordersList').innerHTML = '<p>Error loading orders</p>';
+            }
+        }
+        
+        // Update order status
+        async function updateOrderStatus(orderId) {
+            const statusSelect = document.getElementById(`status-${orderId}`);
+            const newStatus = statusSelect.value;
+            
+            try {
+                const response = await fetch(`/admin/api/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
+                });
+                
+                const result = await response.json();
+                console.log(result.message);
+            } catch (error) {
+                console.error('Error updating order status:', error);
+                alert('Error updating order status');
+            }
+        }
+        
+        // Load inventory when page loads
+        loadInventory();
+    </script>
+</body>
+</html>
