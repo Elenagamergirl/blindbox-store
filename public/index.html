@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PostPet Retro Site</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tahoma:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { 
+      font-family: 'Tahoma', sans-serif; 
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f5f0f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    .retro-border { 
+      border: 3px solid #DB8FAF; 
+      border-radius: 12px; 
+    }
+    
+    .retro-shadow { 
+      box-shadow: 4px 4px 0px #c47ea0; 
+    }
+
+    .nav-button {
+      background: linear-gradient(to bottom, #e3a2c4 0%, #DB8FAF 50%, #c47ea0 100%);
+      border: 2px solid #c47ea0;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      padding: 6px 12px;
+      font-size: 13px;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .nav-button:hover {
+      background: linear-gradient(to bottom, #DB8FAF 0%, #c47ea0 50%, #b87893 100%);
+      transform: translateY(-2px);
+    }
+
+    .pink-gradient { 
+      background: linear-gradient(135deg, #e3a2c4, #DB8FAF, #c47ea0); 
+    }
+    
+    .cyan-gradient {
+      background: linear-gradient(135deg, #4bcffa, #0fbcf9, #00a8ff);
+    }
+    
+    .purple-gradient {
+      background: linear-gradient(135deg, #9c88ff, #8c7ae6, #786fa6);
+    }
+
+    .ie-titlebar { 
+      background: linear-gradient(to bottom, #0054e3 0%, #0041b8 100%); 
+      border-bottom: 1px solid #003d99; 
+      color: white; 
+      padding: 2px 8px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      font-size: 14px; 
+      font-weight: bold; 
+    }
+
+    .ie-menubar { 
+      background: linear-gradient(to bottom, #f0f0f0 0%, #e8e8e8 100%); 
+      border-bottom: 1px solid #d0d0d0; 
+      padding: 2px 8px; 
+      display: flex; 
+      gap: 16px; 
+      font-size: 12px; 
+    }
+    
+    .ie-menubar span:hover { 
+      background-color: #cce0ff; 
+      border-radius: 2px; 
+      padding: 2px 4px; 
+      cursor: pointer; 
+    }
+
+    .ie-toolbar { 
+      background: linear-gradient(to bottom, #f8f8f8 0%, #e8e8e8 100%); 
+      border-bottom: 1px solid #d0d0d0; 
+      padding: 4px 8px; 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+    }
+    
+    .ie-button { 
+      background: linear-gradient(to bottom, #f0f0f0 0%, #e0e0e0 100%); 
+      border: 1px outset #d0d0d0; 
+      color: #000; 
+      font-size: 11px; 
+      padding: 2px 6px; 
+      cursor: pointer; 
+      transition: all 0.2s ease;
+    }
+    
+    .ie-button:hover { 
+      background: linear-gradient(to bottom, #e8e8f8 0%, #d8d8f0 100%); 
+      transform: translateY(-1px);
+    }
+
+    .address-bar { 
+      background: white; 
+      border: 1px inset #c0c0c0; 
+      padding: 2px 4px; 
+      font-size: 11px; 
+      flex: 1; 
+      margin: 0 4px; 
+    }
+
+    .header-section { 
+      background: linear-gradient(135deg, #e3a2c4, #DB8FAF, #c47ea0); 
+      border-bottom: 4px solid #DB8FAF; 
+      box-shadow: 2px 2px 4px #c47ea0; 
+      padding: 8px 16px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      flex-wrap: wrap; 
+    }
+
+    .header-title { 
+      font-size: 24px; 
+      font-weight: 900; 
+      color: #DB8FAF; 
+      margin-right: 24px; 
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .header-buttons { 
+      display: flex; 
+      gap: 4px; 
+      flex-wrap: wrap; 
+    }
+
+    .sidebar-tv-screen {
+      aspect-ratio: 16/9;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .sidebar-ribbon {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .page {
+      display: none;
+    }
+    
+    .active {
+      display: block;
+    }
+    
+    /* Animation for Kjøp nå button */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 4px 4px 0px #c47ea0;
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 6px 6px 0px #c47ea0, 0 0 15px rgba(255, 215, 0, 0.8);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 4px 4px 0px #c47ea0;
+      }
+    }
+    
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+    
+    .kjop-na-button {
+      background: linear-gradient(to bottom, #FFD700, #FFC400, #FFA500);
+      border: 3px solid #FF8C00;
+      border-radius: 12px;
+      color: #8B4513;
+      font-weight: bold;
+      text-shadow: 1px 1px 0px rgba(255,255,255,0.7);
+      padding: 12px 24px;
+      font-size: 20px;
+      box-shadow: 4px 4px 0px #c47ea0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .kjop-na-button:hover {
+      background: linear-gradient(to bottom, #FFC400, #FFA500, #FF8C00);
+      transform: translateY(-3px);
+      box-shadow: 6px 6px 0px #c47ea0;
+    }
+    
+    /* Shop-specific styles */
+    .shop-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .shop-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .shop-header h2 {
+      font-size: 2.5rem;
+      color: #DB8FAF;
+      text-shadow: 3px 3px 0px white;
+      font-weight: 900;
+    }
+    
+    .loading {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #8b008b;
+      margin-top: 40px;
+    }
+    
+    .series-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    
+    @media (min-width: 768px) {
+      .series-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    
+    .series-card {
+      display: block;
+      text-decoration: none;
+    }
+    
+    .card-container {
+      background: linear-gradient(to bottom, #ff66b2, #cc0066);
+      border: 3px solid #8b008b;
+      border-radius: 8px;
+      box-shadow: 5px 5px 0px rgba(139, 0, 139, 0.5);
+      padding: 15px;
+      transition: transform 0.3s ease;
+    }
+    
+    .card-container:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+    
+    .image-container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 2px solid #8b008b;
+    }
+    
+    .image-wrapper {
+      aspect-ratio: 1 / 1;
+      background-color: white;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .series-name {
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 0px #8b008b;
+    }
+    
+    .available-count {
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #f5d6e6;
+    }
+    
+    /* Series Detail Page Styles */
+    .back-button {
+      display: flex;
+      align-items: center;
+      color: #DB8FAF;
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+    
+    .back-button:hover {
+      text-decoration: underline;
+    }
+    
+    .series-detail-container {
+      position: relative;
+      background: linear-gradient(to bottom, #f0f0f0, #d0d0d0);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      min-height: 600px;
+    }
+    
+    .series-poster {
+      position: absolute;
+      left: 30px;
+      right: 30px;
+      top: 30px;
+      height: 45%;
+      z-index: 1;
+    }
+    
+    .poster-content {
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      border-radius: 12px;
+      border: 4px solid #ccc;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    
+    .poster-content img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .fallback-poster {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom right, #ffcce6, #ccccff, #cce6ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    .fallback-poster h2 {
+      color: #DB8FAF;
+      font-size: 2.5rem;
+      font-weight: 900;
+    }
+    
+    .fallback-poster p {
+      color: #666;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    
+    .display-platform {
+      position: relative;
+      z-index: 10;
+      margin-top: 55%;
+    }
+    
+    .platform-base {
+      background: linear-gradient(to top, #bbb, #ccc);
+      border-radius: 10px;
+      border: 4px solid #777;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      padding: 25px;
+      perspective: 1000px;
+    }
+    
+    .series-label {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      background-color: #777;
+      color: white;
+      padding: 8px 25px;
+      border-radius: 10px 10px 0 0;
+      font-weight: bold;
+      font-size: 0.9rem;
+      border: 2px solid #666;
+    }
+    
+    .boxes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      justify-items: center;
+      transform-style: preserve-3d;
+      perspective: 800px;
+    }
+    
+    .blind-box-item {
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .blind-box-item:hover {
+      transform: scale(1.1);
+      z-index: 10;
+    }
+    
+    .box-container {
+      background: linear-gradient(to bottom, #ffcce6, #e6ccff);
+      border: 2px solid #ff66b2;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .box-top {
+      background-color: white;
+      border-radius: 5px;
+      padding: 8px;
+      margin-bottom: 5px;
+      border: 1px solid #ffb3d9;
+    }
+    
+    .box-image {
+      aspect-ratio: 1 / 1;
+      background: linear-gradient(to bottom right, #ffe6f2, #f2e6ff);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .box-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .series-branding {
+      background-color: #ff66b2;
+      color: white;
+      text-align: center;
+      padding: 5px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+    
+    .character-name {
+      text-align: center;
+      margin-top: 5px;
+    }
+    
+    .character-name p:first-child {
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .character-name p:last-child {
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: #DB8FAF;
+    }
+    
+    .selection-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(255, 255, 160, 0.8);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .selection-overlay span {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .sold-out-message {
+      text-align: center;
+      padding: 40px 0;
+    }
+    
+    .sold-out-message div:first-child {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+    
+    .sold-out-message p:first-of-type {
+      font-size: 1.5rem;
+      color: #666;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .sold-out-message p:last-of-type {
+      color: #888;
+    }
+    
+    .more-boxes {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    
+    .instruction-text {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    
+    .shop-page {
+      display: none;
+    }
+    
+    .shop-page.active {
+      display: block;
+    }
+    
+    .shop-nav-button {
+      background: linear-gradient(to bottom, #e3a2c4 0%, #DB8FAF 50%, #c47ea0 100%);
+      border: 2px solid #c47ea0;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      padding: 8px 16px;
+      font-size: 14px;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      margin-bottom: 20px;
+    }
+    
+    .shop-nav-button:hover {
+      background: linear-gradient(to bottom, #DB8FAF 0%, #c47ea0 50%, #b87893 100%);
+      transform: translateY(-2px);
+    }
+    
+    .remove-item-btn {
+      background: #ff5555;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-left: 10px;
+    }
+    
+    .remove-item-btn:hover {
+      background: #ff3333;
+    }
+    
+    /* Enhanced inventory styles */
+    .sold-out-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border-radius: 4px;
+    }
+    
+    .stock-count {
+      font-size: 0.7rem;
+      color: #4CAF50;
+      font-weight: bold;
+      margin-top: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- IE Title Bar -->
+  <div class="ie-titlebar">
+    <span>PostPet - Windows Internet Explorer</span>
+    <div class="flex gap-1">
+      <button class="ie-button">_</button>
+      <button class="ie-button">□</button>
+      <button class="ie-button" style="background:#ff5555; color:white;">×</button>
+    </div>
+  </div>
+
+  <!-- IE Menu Bar -->
+  <div class="ie-menubar">
+    <span>File</span>
+    <span>Edit</span>
+    <span>View</span>
+    <span>Favorites</span>
+    <span>Help</span>
+  </div>
+
+  <!-- IE Toolbar -->
+  <div class="ie-toolbar">
+    <div class="flex gap-1">
+      <button class="ie-button">←</button>
+      <button class="ie-button">→</button>
+      <button class="ie-button">↻</button>
+      <button id="home-button" class="ie-button">🏠</button>
+    </div>
+    <div class="flex items-center flex-1 ml-4">
+      <span style="font-size:11px; margin-right:4px;">Address:</span>
+      <input type="text" class="address-bar" value="http://postpet.jp/">
+      <button class="ie-button">Go</button>
+    </div>
+    <span style="font-size:11px;">🔍 Google</span>
+  </div>
+
+  <!-- PostPet Header with Retro Nav Buttons -->
+  <div class="header-section">
+    <div class="flex items-center flex-wrap">
+      <div class="header-title">PostPet</div>
+      <div class="header-buttons">
+        <button id="postpetcom-button" class="nav-button">PostPetcom</button>
+        <button id="online-button" class="nav-button">Online</button>
+        <button id="postpetds-button" class="nav-button">PostPetDS</button>
+        <button id="webpostpet-button" class="nav-button">Web PostPet</button>
+      </div>
+    </div>
+    <div class="flex gap-2 flex-wrap">
+      <button class="nav-button">Mailing List</button>
+      <button id="sitemap-button" class="nav-button">cart&nbsp;</button>
+    </div>
+  </div>
+
+  <!-- Home Page -->
+  <div id="home-page" class="page active">
+    <div class="max-w-7xl mx-auto p-4">
+      <div class="grid grid-cols-12 gap-4">
+        <!-- Main Content Area -->
+        <div class="col-span-9">
+          <!-- Hero Banner -->
+          <div class="cyan-gradient retro-border retro-shadow p-6 mb-4 relative overflow-hidden">
+            <div class="absolute top-2 left-4">
+              <div class="px-4 py-2 rounded-full text-sm font-bold transform -rotate-12" style="background-color: #DB8FAF; color: white;">
+              &lt;3&nbsp; </div>
+            </div>
+            
+            <div class="text-center">
+              <h2 class="text-4xl font-bold text-white mb-2" style="text-shadow: 3px 3px 6px rgba(0,0,0,0.4);">
+                PostPet
+              </h2>
+              <h1 class="text-6xl font-black mb-4" style="color: #DB8FAF; text-shadow: 4px 4px 0px white, 8px 8px 0px #c47ea0;">
+              Lanserins salg&nbsp;&nbsp; </h1>
+              
+              <div class="bg-white/95 rounded-xl px-6 py-3 inline-block retro-border">
+                <p class="text-xl font-bold text-gray-800">&nbsp;Få en gave på kjøpet</p>
+                <p class="text-2xl font-black text-red-600">kjøp for en verdi av 1500 kr og <br>
+                få med gave&nbsp;</p>
+              </div>
+              
+              <button id="kjop-na-button" class="ml-6 kjop-na-button pulse-animation">
+              Kjøp nå&nbsp; </button>
+            </div>
+
+            <div class="absolute bottom-4 right-3">
+              <div class="w-20 h-20 rounded-full flex items-center justify-center border-4 border-white" style="background-color: #DB8FAF;">
+                <span class="text-3xl">🐻</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Grid -->
+          <div class="grid grid-cols-3 gap-4 mb-4">
+            <div class="pink-gradient retro-border retro-shadow p-4 text-center">
+              <div class="bg-white rounded-lg p-4 mb-3 retro-border">
+                <div class="w-full h-24 bg-gradient-to-r from-green-200 via-cyan-200 to-blue-200 rounded-lg flex items-center justify-center">
+                  <span class="text-3xl">🏭</span>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2" style="text-shadow: 2px 2px 0px #8b008b;">
+                kampanjer
+              </h3>
+              <p class="font-bold" style="color: #f5d6e6;">
+                商店やオシャレできる工場見学祭！
+              </p>
+            </div>
+
+            <div class="cyan-gradient retro-border retro-shadow p-4 text-center">
+              <div class="bg-white rounded-lg p-4 mb-3 retro-border">
+                <div class="w-full h-24 bg-gradient-to-r from-yellow-200 via-pink-200 to-purple-200 rounded-lg flex items-center justify-center">
+                  <span class="text-3xl">🎮</span>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2" style="text-shadow: 2px 2px 0px #00688b;">
+              Mickey head in the cloud&nbsp; </h3>
+              <p class="text-sm text-cyan-100 font-bold">
+                カワイイペットが遊りたくちゃ！
+              </p>
+            </div>
+
+            <div class="purple-gradient retro-border retro-shadow p-4 text-center">
+              <div class="bg-white rounded-lg p-4 mb-3 retro-border">
+                <div class="w-full h-24 bg-gradient-to-r from-pink-400 via-cyan-100 to-green-100 rounded-lg flex items-center justify-center">
+                  <span class="text-3xl">🎯</span>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2" style="text-shadow: 2px 2px 0px #4b0082;">
+              Oyo bear&nbsp; </h3>
+              <p class="text-sm text-purple-100 font-bold">
+                カワイイペットが帰りたくちゃ！
+              </p>
+            </div>
+          </div>
+
+          <!-- Bottom promotional sections -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="purple-gradient retro-border retro-shadow p-4">
+              <div class="flex items-center">
+                <div class="w-28 h-28 bg-yellow-200 rounded-xl mr-4 flex items-center justify-center retro-border border-yellow-400">
+                  <span class="text-4xl">🎁</span>
+                </div>
+                <div>
+                  <h3 class="text-3xl font-black text-white mb-2" style="text-shadow: 3px 3px 0px #4b0082;">
+                    Popmart
+                  </h3>
+                  <p class="text-white font-bold text-lg">
+                    サプライズいっぱいの限定版だよ
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="pink-gradient retro-border retro-shadow p-4">
+              <div class="flex items-center">
+                <div class="w-28 h-28 bg-white rounded-xl mr-4 flex items-center justify-center retro-border" style="border-color: #DB8FAF;">
+                  <span class="text-4xl">💝</span>
+                </div>
+                <div>
+                  <h3 class="text-3xl font-black text-white mb-2" style="text-shadow: 3px 3px 0px #8b008b;">
+                  Nommi&nbsp; </h3>
+                  <p class="text-white font-bold text-lg">
+                    限定商品がたくさん！
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shopping Cart Section -->
+          <div class="mt-4 bg-gradient-to-r from-yellow-200 via-pink-200 to-cyan-200 retro-border retro-shadow p-4">
+            <h3 class="text-xl font-bold mb-3 px-4 py-2 rounded-xl retro-border inline-block" style="color: #a36d8b; background-color: #e3c3d5; border-color: #DB8FAF;">
+            kjøp&nbsp; </h3>
+            
+            <div class="bg-white rounded-xl p-6 retro-border border-cyan-400">
+              <div class="grid grid-cols-3 gap-6">
+                <div class="flex items-center">
+                  <div class="w-20 h-20 rounded-xl mr-4 flex items-center justify-center retro-border" style="background-color: #f5d6e6; border-color: #DB8FAF;">
+                    <span class="text-3xl">📦</span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-lg" style="color: #DB8FAF;">Gratis frakt&nbsp;</h4>
+                    <p class="text-2xl font-black">fra 900kr&nbsp;&nbsp;</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-center">
+                  <div class="w-20 h-20 bg-cyan-200 rounded-xl mr-4 flex items-center justify-center retro-border border-cyan-400">
+                    <span class="text-3xl">🧸</span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-cyan-600 text-lg">Oyo bear hippster</h4>
+                    <p class="text-2xl font-black">250kr&nbsp;</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-center">
+                  <div class="w-20 h-20 bg-purple-200 rounded-xl mr-4 flex items-center justify-center retro-border border-purple-400">
+                    <span class="text-3xl">🐱</span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-purple-600 text-lg">mickey head in the clouds</h4>
+                    <p class="text-2xl font-black">500kr&nbsp;</p>
+                  </div>
+                </div>
+              </div>
+              
+              <p class="text-center mt-6 font-bold text-gray-700 text-xl">
+                ......
+              </p>
+              
+              <div class="text-center mt-6">
+                <button id="cart-button" class="pink-gradient text-white font-bold px-12 py-4 rounded-full retro-border retro-shadow text-2xl" style="border-color: #c47ea0;">
+                Handlekurv&nbsp; </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Sidebar - Updated with TV screen style -->
+        <div class="col-span-3 space-y-3">
+          <!-- So-net banner -->
+          <div class="bg-gradient-to-b from-cyan-200 to-blue-300 p-3 text-center rounded-lg">
+            <h4 class="font-bold text-blue-800 mb-3 text-lg">So-netへ</h4>
+            <div class="sidebar-tv-screen">
+              <div class="aspect-video bg-gradient-to-r from-pink-200 to-blue-200 rounded flex items-center justify-center">
+                <span class="text-2xl">👥</span>
+              </div>
+            </div>
+            <div class="sidebar-ribbon">ベテルイフコスメ!</div>
+          </div>
+
+          <!-- PostPet PANS -->
+          <div class="bg-gradient-to-b from-pink-200 to-purple-200 p-3 text-center rounded-lg">
+            <h4 class="font-bold text-purple-800 mb-3 text-lg">PostPet PANS</h4>
+            <div class="sidebar-tv-screen">
+              <div class="aspect-video bg-gradient-to-r from-pink-200 to-purple-200 rounded flex items-center justify-center">
+                <span class="text-2xl">🎀</span>
+              </div>
+            </div>
+            <div class="sidebar-ribbon">オンラインで</div>
+          </div>
+
+          <!-- Blind Pig Show -->
+          <div class="bg-gradient-to-b from-yellow-200 to-pink-200 p-3 text-center rounded-lg">
+            <h4 class="font-bold text-pink-800 mb-3 text-lg">PostPet</h4>
+            <div class="sidebar-tv-screen">
+              <div class="aspect-video bg-gradient-to-r from-yellow-200 to-pink-200 rounded flex items-center justify-center">
+                <span class="text-2xl">🐷</span>
+              </div>
+            </div>
+            <div class="sidebar-ribbon">限りなく限定品4月</div>
+          </div>
+
+          <!-- Additional boxes -->
+          <div class="bg-gradient-to-b from-green-200 to-blue-200 p-3 text-center rounded-lg">
+            <div class="sidebar-tv-screen">
+              <div class="aspect-video bg-gradient-to-r from-green-200 to-blue-200 rounded flex items-center justify-center">
+                <span class="text-2xl">📺</span>
+              </div>
+            </div>
+            <div class="sidebar-ribbon">テレビアニメ</div>
+          </div>
+
+          <div class="bg-gradient-to-b from-purple-200 to-pink-200 p-3 text-center rounded-lg">
+            <div class="sidebar-tv-screen">
+              <div class="aspect-video bg-gradient-to-r from-purple-200 to-cyan-200 rounded flex items-center justify-center">
+                <span class="text-2xl">🎵</span>
+              </div>
+            </div>
+            <div class="sidebar-ribbon">ウルジメタス</div>
+          </div>
+
+          <div class="bg-gradient-to-b from-pink-200 to-red-200 p-3 text-center rounded-lg">
+            <div class="sidebar-tv-screen">
+              <div class="aspect-video bg-pink-200 rounded flex items-center justify-center">
+                <span class="text-white font-bold text-2xl">♥</span>
+              </div>
+            </div>
+            <div class="sidebar-ribbon">えいご</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop Page -->
+  <div id="shop-page" class="shop-page">
+    <div class="shop-container">
+      <button id="back-from-shop" class="shop-nav-button">← Back to Home</button>
+      
+      <div class="shop-header">
+        <h2>PostPet Blind Box Shop</h2>
+      </div>
+      
+      <div id="loading-message" class="loading">Loading series...</div>
+      
+      <div id="series-container" class="series-grid" style="display: none;">
+        <!-- Series cards will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Series Detail Page -->
+  <div id="series-detail-page" class="shop-page">
+    <div class="shop-container">
+      <button id="back-button" class="shop-nav-button">← Back to All Series</button>
+
+      <div id="detail-loading" class="loading">Loading available boxes...</div>
+      
+      <div id="series-detail-container" class="series-detail-container" style="display: none;">
+        <!-- Background Poster -->
+        <div class="series-poster">
+          <div class="poster-content" id="poster-content">
+            <!-- Poster content will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Display Platform -->
+        <div class="display-platform">
+          <div class="platform-base">
+            <div class="series-label" id="series-label"></div>
+            
+            <div id="boxes-container">
+              <!-- Boxes content will be inserted here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden Cart Section -->
+  <div id="cart-tab" class="hidden max-w-7xl mx-auto p-6 bg-white rounded-lg retro-border retro-shadow mt-6">
+    <h2 class="text-center font-bold text-2xl text-purple-600 mb-6">Your Shopping Cart</h2>
+    <div id="cart-content">
+      <p class="text-center text-gray-500">Loading cart...</p>
+    </div>
+  </div>
+
+  <script>
+    // Enhanced inventory tracking system
+    let inventoryData = JSON.parse(localStorage.getItem('postpetInventory')) || {};
+
+    // Initialize inventory if not exists
+    function initializeInventory() {
+      if (Object.keys(inventoryData).length === 0) {
+        // Sample data for series inventory
+        inventoryData = {
+          "Mystery Boxes": { 
+            total: 15, 
+            available: 15,
+            boxes: {
+              1: { available: true, stock: 3 },
+              2: { available: true, stock: 3 },
+              3: { available: true, stock: 3 },
+              4: { available: true, stock: 3 },
+              5: { available: true, stock: 3 },
+              17: { available: true, stock: 3 },
+              18: { available: true, stock: 3 },
+              19: { available: true, stock: 3 },
+              20: { available: true, stock: 3 },
+              21: { available: true, stock: 3 }
+            }
+          },
+          "Fantasy Collection": { 
+            total: 12, 
+            available: 12,
+            boxes: {
+              6: { available: true, stock: 4 },
+              7: { available: true, stock: 4 },
+              8: { available: true, stock: 4 }
+            }
+          },
+          "Vintage Treasures": { 
+            total: 8, 
+            available: 8,
+            boxes: {
+              9: { available: true, stock: 4 },
+              10: { available: true, stock: 4 }
+            }
+          },
+          "Space Adventures": { 
+            total: 20, 
+            available: 20,
+            boxes: {
+              11: { available: true, stock: 4 },
+              12: { available: true, stock: 4 },
+              13: { available: true, stock: 4 },
+              14: { available: true, stock: 4 },
+              15: { available: true, stock: 4 }
+            }
+          }
+        };
+        saveInventoryToStorage();
+      }
+    }
+
+    function saveInventoryToStorage() {
+      localStorage.setItem('postpetInventory', JSON.stringify(inventoryData));
+    }
+
+    // Cart data with localStorage persistence
+    let cartItems = JSON.parse(localStorage.getItem('postpetCart')) || [];
+
+    function saveCartToStorage() {
+      localStorage.setItem('postpetCart', JSON.stringify(cartItems));
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cart-content');
+      if (cartItems.length === 0) {
+        container.innerHTML = `<div class="text-center py-8"><div class="text-6xl mb-4">🛒</div><p class="text-gray-500">Your cart is empty.</p></div>`;
+        return;
+      }
+
+      let total = 0;
+      let html = '<div class="space-y-4 mb-6">';
+      cartItems.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        html += `
+          <div class="flex items-center gap-4 bg-gray-100 p-3 rounded-lg retro-border">
+            <div class="w-16 h-16 flex items-center justify-center">
+              <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover rounded-md">
+            </div>
+            <div class="flex-grow">
+              <p class="font-bold text-gray-700">${item.name}</p>
+              <p class="text-sm text-gray-500">Qty: ${item.quantity}</p>
+            </div>
+            <p class="font-bold text-pink-600">$${itemTotal.toFixed(2)}</p>
+            <button class="remove-item-btn" data-index="${index}">Remove</button>
+          </div>
+        `;
+      });
+      html += `</div>
+        <div class="bg-purple-100 border-2 border-purple-200 rounded-lg p-4 retro-border">
+          <div class="flex justify-between items-center text-xl font-bold">
+            <span class="text-purple-700">Total:</span>
+            <span class="text-pink-600">$${total.toFixed(2)}</span>
+          </div>
+          <button class="w-full mt-4 bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 rounded-lg retro-shadow">Checkout</button>
+        </div>
+      `;
+      container.innerHTML = html;
+      
+      // Add event listeners to remove buttons
+      document.querySelectorAll('.remove-item-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const index = parseInt(this.getAttribute('data-index'));
+          removeFromCart(index);
+        });
+      });
+    }
+
+    function removeFromCart(index) {
+      cartItems.splice(index, 1);
+      saveCartToStorage();
+      renderCart();
+    }
+
+    // Page navigation function
+    function showPage(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      
+      // Hide shop pages
+      document.querySelectorAll('.shop-page').forEach(page => {
+        page.classList.remove('active');
+      });
+      
+      // Hide cart if it's visible
+      document.getElementById('cart-tab').classList.add('hidden');
+      
+      // Show the selected page
+      if (pageId === 'shop-page' || pageId === 'series-detail-page') {
+        document.getElementById(pageId).classList.add('active');
+      } else {
+        document.getElementById(pageId).classList.add('active');
+      }
+      
+      // Update address bar
+      document.querySelector('.address-bar').value = `http://postpet.jp/${pageId.replace('-page', '')}`;
+    }
+
+    // Navigation function
+    const sitemapButton = document.getElementById('sitemap-button');
+    const cartButton = document.getElementById('cart-button');
+    const kjopNaButton = document.getElementById('kjop-na-button');
+    const homeButton = document.getElementById('home-button');
+    const cartTab = document.getElementById('cart-tab');
+    const backFromShopButton = document.getElementById('back-from-shop');
+
+    // Add back button to cart
+    const backButton = document.createElement('button');
+    backButton.textContent = '← Back to Home';
+    backButton.className = 'mb-4 bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg retro-shadow';
+    backButton.onclick = () => {
+      cartTab.classList.add('hidden');
+      showPage('home-page');
+    };
+    cartTab.prepend(backButton);
+
+    // Event listeners for navigation buttons
+    document.getElementById('postpetcom-button').addEventListener('click', () => {
+      showPage('shop-page');
+      loadProductSeries();
+    });
+
+    document.getElementById('online-button').addEventListener('click', () => {
+      showPage('online-page');
+    });
+
+    document.getElementById('postpetds-button').addEventListener('click', () => {
+      showPage('postpetds-page');
+    });
+
+    document.getElementById('webpostpet-button').addEventListener('click', () => {
+      showPage('webpostpet-page');
+    });
+
+    // Event listener for "Kjøp nå" button
+    if (kjopNaButton) {
+      kjopNaButton.addEventListener('click', () => {
+        showPage('shop-page');
+        loadProductSeries();
+      });
+    }
+
+    // Event listener for home button
+    homeButton.addEventListener('click', () => {
+      showPage('home-page');
+    });
+
+    // Event listener for back from shop button
+    backFromShopButton.addEventListener('click', () => {
+      showPage('home-page');
+    });
+
+    sitemapButton.addEventListener('click', () => {
+      cartTab.classList.remove('hidden');
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.querySelectorAll('.shop-page').forEach(page => {
+        page.classList.remove('active');
+      });
+      renderCart();
+    });
+
+    if (cartButton) {
+      cartButton.addEventListener('click', () => {
+        cartTab.classList.remove('hidden');
+        document.querySelectorAll('.page').forEach(page => {
+          page.classList.remove('active');
+        });
+        document.querySelectorAll('.shop-page').forEach(page => {
+          page.classList.remove('active');
+        });
+        renderCart();
+      });
+    }
+
+    // Initialize inventory when the page loads
+    initializeInventory();
+    
+    // Initial render
+    renderCart();
+
+    // Shop functionality
+    // Sample data for the shop with inventory tracking
+    const sampleSeriesData = {
+      "Mystery Boxes": [
+        {
+          series_image_url: "https://placehold.co/600x400/pink/white?text=Mystery+Boxes",
+          is_available: true
+        },
+        {
+          series_image_url: "https://placehold.co/300x300/pink/white?text=Mystery+Item",
+          is_available: true
+        },
+        {
+          series_image_url: null,
+          is_available: false
+        }
+      ],
+      "Fantasy Collection": [
+        {
+          series_image_url: "https://placehold.co/600x400/lavender/white?text=Fantasy+Collection",
+          is_available: true
+        },
+        {
+          series_image_url: "https://placehold.co/300x300/lavender/white?text=Fantasy+Box",
+          is_available: true
+        }
+      ],
+      "Vintage Treasures": [
+        {
+          series_image_url: "https://placehold.co/600x400/gold/white?text=Vintage+Treasures",
+          is_available: true
+        },
+        {
+          series_image_url: null,
+          is_available: false
+        },
+        {
+          series_image_url: null,
+          is_available: false
+        }
+      ],
+      "Space Adventures": [
+        {
+          series_image_url: "https://placehold.co/600x400/blue/white?text=Space+Adventures",
+          is_available: true
+        }
+      ]
+    };
+
+    // Sample data for series detail with inventory tracking
+    const sampleBoxData = {
+      "Mystery Boxes": [
+        { id: 1, specific_name: "Secret Enigma", price: 12.99, image_url: "https://placehold.co/200x200/pink/white?text=Enigma", series_name: "Mystery Boxes" },
+        { id: 2, specific_name: "Hidden Surprise", price: 12.99, image_url: "https://placehold.co/200x200/pink/white?text=Surprise", series_name: "Mystery Boxes" },
+        { id: 3, specific_name: "Mystery Package", price: 12.99, image_url: "https://placehold.co/200x200/pink/white?text=Package", series_name: "Mystery Boxes" },
+        { id: 4, specific_name: "Puzzle Box", price: 12.99, image_url: "https://placehold.co/200x200/pink/white?text=Puzzle", series_name: "Mystery Boxes" },
+        { id: 5, specific_name: "Curious Container", price: 12.99, image_url: "https://placehold.co/200x200/pink/white?text=Curious", series_name: "Mystery Boxes" },
+        { id: 17, specific_name: "Mystery Box 6", price: 12.99, image_url: "https://placehold.co/200x200/pink/white?text=Box+6", series_name: "Mystery Boxes" },
+        { id: 18, specific_name: "Mystery Box 7", price: 12.99, image_url: "https://placehold.co/200x200/pink/white?text=Box+7", series_name: "Mystery Boxes" },
+        { id: 19, specific_name: "Mystery Box 8", price: 12.99, image_url: "https://placehold.co/200x200/pink/white?text=Box+8", series_name: "Mystery Boxes" },
+        { id: 20, specific_name: "Mystery Box 9", price: 12.99, image_url: "https://placehold.co/200x200/pink/white?text=Box+9", series_name: "Mystery Boxes" },
+        { id: 21, specific_name: "Mystery Box 10", price: 12.99, image_url: "https://placehold.co/200x200/pink/white?text=Box+10", series_name: "Mystery Boxes" }
+      ],
+      "Fantasy Collection": [
+        { id: 6, specific_name: "Dragon Egg", price: 14.99, image_url: "https://placehold.co/200x200/lavender/white?text=Dragon+Egg", series_name: "Fantasy Collection" },
+        { id: 7, specific_name: "Wizard's Treasure", price: 14.99, image_url: "https://placehold.co/200x200/lavender/white?text=Wizard", series_name: "Fantasy Collection" },
+        { id: 8, specific_name: "Fairy Chest", price: 14.99, image_url: "https://placehold.co/200x200/lavender/white?text=Fairy", series_name: "Fantasy Collection" }
+      ],
+      "Vintage Treasures": [
+        { id: 9, specific_name: "Antique Mystery", price: 16.99, image_url: "https://placehold.co/200x200/gold/white?text=Antique", series_name: "Vintage Treasures" },
+        { id: 10, specific_name: "Classic Box", price: 16.99, image_url: "https://placehold.co/200x200/gold/white?text=Classic", series_name: "Vintage Treasures" }
+      ],
+      "Space Adventures": [
+        { id: 11, specific_name: "Alien Artifact", price: 15.99, image_url: "https://placehold.co/200x200/blue/white?text=Alien", series_name: "Space Adventures" },
+        { id: 12, specific_name: "Space Capsule", price: 15.99, image_url: "https://placehold.co/200x200/blue/white?text=Capsule", series_name: "Space Adventures" },
+        { id: 13, specific_name: "Moon Rock", price: 15.99, image_url: "https://placehold.co/200x200/blue/white?text=Moon", series_name: "Space Adventures" },
+        { id: 14, specific_name: "Martian Surprise", price: 15.99, image_url: "https://placehold.co/200x200/blue/white?text=Martian", series_name: "Space Adventures" },
+        { id: 15, specific_name: "Galactic Gift", price: 15.99, image_url: "https://placehold.co/200x200/blue/white?text=Galactic", series_name: "Space Adventures" },
+        { id: 16, specific_name: "Orbital Oddity", price: 15.99, image_url: "https://placehold.co/200x200/blue/white?text=Orbital", series_name: "Space Adventures" }
+      ]
+    };
+
+    // Update the createSeriesCard function to show available count
+    function createSeriesCard(seriesName, series) {
+      // Get available count from inventory
+      const availableCount = inventoryData[seriesName] ? inventoryData[seriesName].available : 0;
+      const isAvailable = availableCount > 0;
+      
+      // Find representative item (first with image or first item)
+      const representativeItem = series.find(item => item.series_image_url) || series[0];
+      
+      return `
+        <a href="#" class="series-card" data-series="${seriesName}">
+          <div class="card-container" style="${!isAvailable ? 'opacity: 0.7;' : ''}">
+            <div class="image-container">
+              <div class="image-wrapper">
+                ${representativeItem.series_image_url ? 
+                  `<img src="${representativeItem.series_image_url}" alt="${seriesName}">` : 
+                  `<span style="font-size: 2.5rem;">🎁</span>`
+                }
+                ${!isAvailable ? `<div class="sold-out-overlay">SOLD OUT</div>` : ''}
+              </div>
+            </div>
+            <h3 class="series-name">${seriesName}</h3>
+            <p class="available-count">${isAvailable ? `${availableCount} available` : 'Sold out'}</p>
+          </div>
+        </a>
+      `;
+    }
+
+    // Function to load and display all series
+    function loadProductSeries() {
+      // Simulate API loading delay
+      setTimeout(() => {
+        const loadingElement = document.getElementById('loading-message');
+        const containerElement = document.getElementById('series-container');
+        
+        // Hide loading message
+        loadingElement.style.display = 'none';
+        
+        // Show container
+        containerElement.style.display = 'grid';
+        
+        // Clear any existing content
+        containerElement.innerHTML = '';
+        
+        // Create and append cards for each series
+        Object.entries(sampleSeriesData).forEach(([seriesName, seriesItems]) => {
+          const cardHtml = createSeriesCard(seriesName, seriesItems);
+          containerElement.innerHTML += cardHtml;
+        });
+        
+        // Add event listeners to series cards
+        document.querySelectorAll('.series-card').forEach(card => {
+          card.addEventListener('click', function(e) {
+            e.preventDefault();
+            const seriesName = this.getAttribute('data-series');
+            showSeriesDetail(seriesName);
+          });
+        });
+      }, 1000);
+    }
+
+    // Function to show series detail page
+    function showSeriesDetail(seriesName) {
+      // Hide shop page, show detail page
+      document.getElementById('shop-page').classList.remove('active');
+      document.getElementById('series-detail-page').classList.add('active');
+      
+      // Set series name in the label
+      document.getElementById('series-label').textContent = seriesName.toUpperCase();
+      
+      // Show loading message
+      document.getElementById('detail-loading').style.display = 'block';
+      document.getElementById('series-detail-container').style.display = 'none';
+      
+      // Load series detail after a delay
+      setTimeout(() => {
+        loadSeriesDetail(seriesName);
+      }, 800);
+    }
+
+    // Update the createBlindBoxItem function to show stock status
+    function createBlindBoxItem(box, position) {
+      // Get inventory status
+      const seriesInventory = inventoryData[box.series_name];
+      const boxInventory = seriesInventory && seriesInventory.boxes[box.id];
+      const isAvailable = boxInventory && boxInventory.available && boxInventory.stock > 0;
+      
+      // Calculate perspective positioning
+      const row = Math.floor(position / 3);
+      const col = position % 3;
+      const translateZ = row * 10;
+      const rotateX = 5 + row * 3;
+      const rotateY = (col - 1) * 5;
+      
+      return `
+        <div class="blind-box-item" data-id="${box.id}" data-series="${box.series_name}"
+          style="transform: perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px); 
+                transform-origin: bottom center; ${!isAvailable ? 'opacity: 0.7;' : ''}">
+          <div class="box-container">
+            <!-- Box Top -->
+            <div class="box-top">
+              <div class="box-image">
+                ${box.image_url ? 
+                  `<img src="${box.image_url}" alt="${box.specific_name}">` : 
+                  `<span>🎁</span>`
+                }
+                ${!isAvailable ? `<div class="sold-out-overlay">SOLD OUT</div>` : ''}
+              </div>
+            </div>
+            
+            <!-- Series Branding -->
+            <div class="series-branding">
+              ${box.series_name}
+            </div>
+            
+            <!-- Character Name -->
+            <div class="character-name">
+              <p>${box.specific_name}</p>
+              <p>$${box.price}</p>
+              ${isAvailable ? `<p class="stock-count">${boxInventory.stock} in stock</p>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Function to load series detail
+    function loadSeriesDetail(seriesName) {
+      const boxes = sampleBoxData[seriesName] || [];
+      const seriesImage = boxes.length > 0 && boxes[0].series_image_url ? boxes[0].series_image_url : null;
+      
+      // Update poster
+      const posterContent = document.getElementById('poster-content');
+      if (seriesImage) {
+        posterContent.innerHTML = `<img src="${seriesImage}" alt="${seriesName}">`;
+      } else {
+        posterContent.innerHTML = `
+          <div class="fallback-poster">
+            <div>
+              <h2>${seriesName}</h2>
+              <p>Blind Box Collection</p>
+            </div>
+          </div>
+        `;
+      }
+      
+      // Update boxes container
+      const boxesContainer = document.getElementById('boxes-container');
+      
+      if (boxes.length > 0) {
+        boxesContainer.innerHTML = `
+          <p class="instruction-text">Choose your blind box!</p>
+          <div class="boxes-grid">
+            ${boxes.slice(0, 9).map((box, index) => createBlindBoxItem(box, index)).join('')}
+          </div>
+          ${boxes.length > 9 ? 
+            `<p class="more-boxes">${boxes.length - 9}</p>` : ''
+          }
+        `;
+        
+        // Add event listeners to blind box items
+        document.querySelectorAll('.blind-box-item').forEach(item => {
+          item.addEventListener('click', function() {
+            const boxId = this.getAttribute('data-id');
+            const seriesName = this.getAttribute('data-series');
+            addToCart(boxId, seriesName);
+          });
+        });
+      } else {
+        boxesContainer.innerHTML = `
+          <div class="sold-out-message">
+            <div>📦</div>
+            <p>All boxes sold out!</p>
+            <p>Check back later for restocks</p>
+          </div>
+        `;
+      }
+      
+      // Hide loading, show content
+      document.getElementById('detail-loading').style.display = 'none';
+      document.getElementById('series-detail-container').style.display = 'block';
+    }
+
+    // Update the addToCart function with accurate inventory tracking
+    function addToCart(boxId, seriesName) {
+      // Find the box in our data
+      const box = sampleBoxData[seriesName].find(b => b.id === parseInt(boxId));
+      
+      if (!box) return;
+      
+      // Check inventory
+      const seriesInventory = inventoryData[seriesName];
+      const boxInventory = seriesInventory.boxes[boxId];
+      
+      if (!boxInventory || !boxInventory.available || boxInventory.stock <= 0) {
+        alert('Sorry, this item is out of stock!');
+        return;
+      }
+      
+      // Show adding overlay
+      const boxElement = document.querySelector(`.blind-box-item[data-id="${boxId}"]`);
+      const overlay = document.createElement('div');
+      overlay.className = 'selection-overlay';
+      overlay.innerHTML = '<span>Adding...</span>';
+      boxElement.appendChild(overlay);
+      
+      // Simulate API call
+      setTimeout(() => {
+        // Add to cart
+        const existingItem = cartItems.find(item => item.id === box.id);
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cartItems.push({
+            id: box.id,
+            name: `${box.series_name} - ${box.specific_name}`,
+            price: box.price,
+            image: box.image_url || 'https://via.placeholder.com/64/DB8FAF/FFFFFF?text=Box',
+            quantity: 1
+          });
+        }
+        
+        saveCartToStorage();
+        
+        // Decrease inventory
+        boxInventory.stock -= 1;
+        seriesInventory.available -= 1;
+        
+        // Update the UI
+        const stockElement = boxElement.querySelector('.stock-count');
+        if (stockElement) {
+          stockElement.textContent = `${boxInventory.stock} in stock`;
+        }
+        
+        // Check if item is now out of stock
+        if (boxInventory.stock <= 0) {
+          boxInventory.available = false;
+          const soldOutOverlay = document.createElement('div');
+          soldOutOverlay.className = 'sold-out-overlay';
+          soldOutOverlay.textContent = 'SOLD OUT';
+          boxElement.querySelector('.box-image').appendChild(soldOutOverlay);
+          boxElement.style.opacity = '0.7';
+        }
+        
+        saveInventoryToStorage();
+        
+        // Check if we need to restock (if there are more than 9 in total inventory)
+        if (seriesInventory.total > 9 && boxInventory.stock === 0) {
+          // Restock after a delay
+          setTimeout(() => {
+            boxInventory.stock = 3; // Restock with 3 items
+            boxInventory.available = true;
+            seriesInventory.available += 3;
+            
+            // Update UI
+            if (stockElement) {
+              stockElement.textContent = `${boxInventory.stock} in stock`;
+            }
+            
+            const soldOutElement = boxElement.querySelector('.sold-out-overlay');
+            if (soldOutElement) {
+              soldOutElement.remove();
+            }
+            
+            boxElement.style.opacity = '1';
+            saveInventoryToStorage();
+            
+            alert(`${box.specific_name} has been restocked!`);
+          }, 5000); // Restock after 5 seconds
+        }
+        
+        alert(`${box.specific_name} added to cart!`);
+        overlay.remove();
+      }, 1000);
+    }
+
+    // Back button functionality for shop pages
+    document.getElementById('back-button').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('series-detail-page').classList.remove('active');
+      document.getElementById('shop-page').classList.add('active');
+    });
+  </script>
+</body>
+</html>
