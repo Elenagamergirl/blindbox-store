@@ -1,3 +1,4 @@
+console.log("Render assigned PORT:", process.env.PORT);
 const express = require('express');
 const path = require('path');
 const connectDB = require('./database');
