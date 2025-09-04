@@ -1,33 +1,30 @@
-require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
-const connectDB = require('./database'); // Import database.js
-
-const apiRoutes = require('./routes/api');
-const adminRoutes = require('./routes/admin');
-
+const connectDB = require('./database');
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Connect to MongoDB
-connectDB(); // Call the function
 
 // Middleware
-app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Serve frontend
+// Connect to MongoDB
+connectDB();
+
+// Serve static files (frontend)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
-app.use('/api', apiRoutes);
-app.use('/admin', adminRoutes);
+// Example route to verify API
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API is working!' });
+});
 
-// Catch-all for SPA
+// Fallback for single-page app (optional)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// PORT must come from Render
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
