@@ -12,26 +12,18 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
-
-// ✅ Admin route FIRST so it takes priority
+// ✅ Admin route first
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin', 'admin.html'));
 });
+
+// Serve static files for everything else
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Main site route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Example API route
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'API is working!' });
-});
-
-// Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
