@@ -1,30 +1,33 @@
+// server.js
 const express = require('express');
 const path = require('path');
 const connectDB = require('./database');
+const dotenv = require('dotenv');
+const apiRoutes = require('./routes/apiRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+
+dotenv.config();
 const app = express();
+
+// Connect to MongoDB
+connectDB();
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Connect to MongoDB
-connectDB();
-
-// Serve static files (frontend)
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Example route to verify API
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'API is working!' });
+// API Routes
+app.use('/api', apiRoutes);
+app.use('/admin-api', adminRoutes);
+
+// Route for admin dashboard
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// Fallback for single-page app (optional)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// PORT must come from Render
+// Port binding for Render
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
