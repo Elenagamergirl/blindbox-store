@@ -1,16 +1,21 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+// database.js
+const mongoose = require('mongoose');
 
-// Create database connection
-const dbPath = path.join(__dirname, 'database', 'blindbox.db');
-const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-        console.error('Error opening database:', err);
-    } else {
-        console.log('Connected to SQLite database');
-        initializeDatabase();
-    }
-});
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (err) {
+    console.error(`Error: ${err.message}`);
+    process.exit(1);
+  }
+};
+
+module.exports = connectDB;
+
 
 // Initialize database with tables
 function initializeDatabase() {
